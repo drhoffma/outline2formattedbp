@@ -1,0 +1,267 @@
+<div class="page" title="Page 1">
+<div class="layoutArea">
+<div class="column">
+
+IMAGE (fashion_mnist_header.png)
+
+In this tutorial you will will learn how to train a simple Convolutional Neural Network (CNN) with Keras on the Fashion MNIST dataset, enabling you to classify fashion images and categories.
+
+The Fashion MNIST dataset is meant to be a (slightly more challenging) drop-in replacement for the (less challenging) MNIST dataset.
+
+Just like the MNIST digit dataset, the Fashion MNIST dataset includes:
+
+60,000 training examples 10,000 testing examples 10 classes
+28x28 grayscale images
+
+The ten fashion class labels includes:
+<ol>
+ 	<li>T-shirt/top</li>
+ 	<li>Trouser/pants</li>
+ 	<li>Pullover shirt</li>
+ 	<li>Dress</li>
+ 	<li>Coat</li>
+ 	<li>Sandal</li>
+ 	<li>Shirt</li>
+ 	<li>Sneaker</li>
+ 	<li>Bag</li>
+ 	<li>Ankle boot</li>
+</ol>
+Throughout the rest of this tutorial you will learn how to train a simple Convolutional Neural Network (CNN) with Keras on the Fashion MNIST dataset, giving you not only hands-on experience working with the Keras library, but also your first taste of clothing/fashion classification.
+
+To learn how to train a Keras CNN on the Fashion MNIST dataset, just keep reading!
+
+</div>
+</div>
+</div>
+<div class="page" title="Page 2">
+<div class="layoutArea">
+<div class="column">
+
+JUMP TO CODE DOWNLOAD
+
+Fashion MNIST with Keras and Deep Learning
+
+In the first part of this tutorial we will review the Fashion MNIST dataset, including how to download it to your system.
+From there we’ll define a simple CNN network using the Keras deep learning library.
+
+Finally, we’ll train our CNN model on the Fashion MNIST dataset, evaluate it, and review the results.
+Let’s go ahead and get started!
+
+The Fashion MNIST dataset
+
+IMAGE fashion_mnist_dataset_sample.png Source:
+
+https://medium.com/deep-learning-turkey/deep-learning-
+
+lab-episode-1-fashion-mnist-c7af60029836
+
+The Fashion MNIST dataset was created by the e-commrece company, Zalando.
+As they note on the their official GitHub repo for the Fashion MNIST dataset, there are a few problems with the standard MNIST digit recognition dataset:
+
+1. It’s far too easy for standard machine learning algorithms to obtain 97%+ accuracy.
+2. It’s even easier for deep learning models to achieve 99%+ accuracy.
+
+3. The dataset is overused
+
+4. MNIST cannot represent modern computer vision tasks Zalando therefore created the Fashion MNIST dataset as a drop-in replacement for MNIST.
+The Fashion MNIST dataset is identical to the MNIST dataset in terms of training set size, testing set size, number of class labels, and image dimension:
+
+60,000 training examples 10,000 testing examples 10 classes
+28x28 grayscale images
+
+If you’ve ever trained a network on the MNIST digit dataset then you can simply change one or two lines of code and train the same network on the Fashion MNIST dataset.
+To find out how, keep reading.
+
+</div>
+</div>
+</div>
+<div class="page" title="Page 3">
+<div class="layoutArea">
+<div class="column">
+
+Obtaining the Fashion MNIST dataset
+
+IMAGE fashion_mnist_obtaining.jpg Source:
+
+https://medium.com/tensorflow/hello-deep-learning-fashion- mnist-with-keras-50fcff8cd74a
+Note to Hoffman:
+
+Give Margaret Maynard-Reid an additional callout in the post itself for putting together such an awesome illustration. Definitely want to give her credit where credit is due.
+
+There are two ways to obtain the Fashion MNIST dataset.
+If you are using the Keras deep learning library, the Fashion MNIST dataset is actually built directly into the `datasets` module of Keras:
+
+CODE load_fashion_mnist.py
+
+Otherwise, if you are using another deep learning library you can download it directory from the the official Fashion MNIST GitHub repo.
+
+Project structure
+
+Review project structure
+
+Defining a simple Convolutional Neural Network (CNN)
+
+We’ll be defining a very simple Convolutional Neural Network to train on the Fashion MNIST dataset.
+We’ll call this CNN “MiniVGGNet” since:
+
+1. The model is inspired by its bigger brother, VGGNet 2. The model has VGGNet characteristics, including:
+
+Only using 3x3 CONV filters
+Stacking multiple CONV layers before applying a max- pooling operation
+
+We’ve used the MiniVGGNet model before a handful of times on the PyImageSearch blog but we’ll briefly review it here today as a matter of completeness.
+Open up a new file, name it `minivggnet.py`, and insert the following code:
+
+Review `minivggnet.py` Codeblock #1: Lines 1-25
+
+Imports
+Start defining `build` method
+Set input shape and channel dimension
+
+Codeblock #2: Lines 27-60
+Two sets of (CONV =&gt; RELU =&gt; BN) * 2 =&gt; POOL layers FC layer and softmax classifier
+
+</div>
+</div>
+</div>
+<div class="page" title="Page 4">
+<div class="layoutArea">
+<div class="column">
+
+Implementing the Fashion MNIST training script with Keras
+
+Now that MiniVGGNet is implemented we can move on to the driver script used:
+
+1. Load the Fashion MNIST dataset
+
+2. Train MiniVGGNet on Fashion MNIST
+Create a new file named `fashion_mnist.py`, open it up, and insert the following code:
+
+Review `fashion_mnist.py` Codeblock #1: Lines 1-21
+
+Imports
+
+Set number of epochs, initial learning rate, and batch size Codeblock #2: Lines 23-39
+
+Load Fashion MNIST dataset
+Re-order data based on channels-first or channels-last ordering
+
+Codeblock #3: Lines 41-51
+Scale pixel intensities to the range [0, 1] One-hot encode the labels
+Define label names
+
+Codeblock #4: Lines 53-64 Compile and train model
+
+Codeblock #5: Lines 66-86
+Make predictions on testing set Show classification report
+Plot training history
+
+Codeblock #6: Lines 88-105
+Sample a set of the testing images
+Make prediction on testing image and determine label name Based on channel ordering grab the image itself
+
+Codeblock #7: Lines 107-130
+Initialize color of label (green for “correct” and “red” for incorrect)
+Create a 3-channel image by merging the grayscale image three times
+Resize image (so we can see it better) and draw label on it Build montage and show output visualization on test set
+
+Fashion MNIST results
+
+We are now ready to train our Keras CNN on the Fashion MNIST dataset!
+
+Make sure you have used the “Downloads” section of this blog post to download the source code and project structure.
+From there, open up a terminal, navigate to where you downloaded the
+
+</div>
+</div>
+</div>
+<div class="page" title="Page 5">
+<div class="layoutArea">
+<div class="column">
+
+code, and execute the following command: COMMAND
+
+OUTPUT
+Epochs 1-3
+
+Epochs 18-20
+
+Classification report IMAGE
+
+plot.png
+
+Here you can see that our network obtained 94% accuracy on the testing set.
+The model classified the “trouser” class 100% correct but seemed to struggle quite a bit with the “shirt” class (~81% accurate).
+
+According to our plot in Figure X there appears to be very little overfitting.
+A deeper architecture with data augmentation would likely lead to higher accuracy.
+Below I have included a sample of fashion classifications:
+
+IMAGE fashion_mnist_results.jpg
+
+As you can see our network is performing quite well at fashion recognition.
+
+Will this model work for fashion images outside the
+
+Fashion MNIST dataset?
+
+IMAGE
+
+https://www.pyimagesearch.com/wp-
+
+content/uploads/2018/05/keras_multi_output_header.png
+
+At this point you are properly wondering if the model we just trained on the Fashion MNIST dataset would be directly applicable to images outside the Fashion MNIST dataset?
+The short answer is “No, unfortunately not."
+
+The longer answer requires a bit of explanation.
+To start, keep in mind that the Fashion MNIST dataset is meant to be a
+
+drop-in replacement for the MNIST dataset, implying that our images have already been processed:
+Each image has been:
+
+Converted to grayscale
+Segmented, such that all background pixels are black and all foreground pixels are some gray, non-black pixel intensity Resized to 28x28 pixels
+
+For real-world fashion and clothing images you would have to preprocess your data in the same manner as the Fashion MNIST dataset.
+And furthermore, even if you could preprocess your dataset in the
+exact same manner, the model still might not be transferrable to real-
+
+</div>
+</div>
+</div>
+<div class="page" title="Page 6">
+<div class="layoutArea">
+<div class="column">
+
+world images.
+Instead, you should train a CNN on example images that will mimic the images the CNN “sees” when deployed to a real-world situation.
+To do that you will likely need to utilize multi-label classification and multi- output networks.
+For more details on both of these techniques be sure to refer to the following tutorials:
+
+1. Multi-label classification with Keras
+2. Keras: Multiple outputs and multiple losses
+
+Summary
+
+In this tutorial you learned how to train a simple CNN on the Fashion MNIST dataset using Keras.
+The Fashion MNIST dataset is meant to be a drop-in replacement for the standard MNIST digit recognition dataset, including:
+
+60,000 training examples 10,000 testing examples 10 classes
+28x28 grayscale images
+
+While the Fashion MNIST dataset is slightly more challenging than the MNIST digit recognition dataset, it unfortunately cannot be used directly in real-world fashion classification tasks, unless you preprocess your images in the exact same manner as Fashion MNIST (segmentation, thresholding, grayscale conversion, resizing).
+
+In most real-world fashion application tasks this process will be near impossible.
+You should use Fashion MNIST as a drop-in replacement for the MNIST digit dataset; however, if you are interested in actually recognizing fashion items in real-world images you should refer to the following two tutorials:
+
+1. Multi-label classification with Keras
+
+2. Keras: Multiple outputs and multiple losses
+Both of the tutorials linked to above will guide you in building a more robust fashion classification system.
+I hope you enjoyed today’s post!
+To download the source code to this post, and be notified when future tutorials are published here on PyImageSearch, just enter your email address in the form below!
+
+</div>
+</div>
+</div>
