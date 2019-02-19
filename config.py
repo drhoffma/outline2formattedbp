@@ -21,7 +21,7 @@ regexStrings = [
 	 r"<strong>To learn \g<1>, <em>just keep reading!</em></strong>"),
 
 	(r"Review project structure",
-	 r"""Review project structure\n\n<pre class="start-line:1 lang:shell decode:true " title="@TITLE@">$ tree --dirsfirst --filelimit 10
+	 r"""Review project structure\n\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">$ tree --dirsfirst --filelimit 10
 output</pre>\n\n...\n"""),
 
 	(r"""(.*), (.*) in the form below!""",
@@ -73,7 +73,7 @@ output</pre>\n\n...\n"""),
 	 r"""\n\<h3\>\g<1>\<\/h3\>\n"""),
 
 	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\n<pre class="start-line:1 lang:shell decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>""")
+	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>""")
 
 
 
