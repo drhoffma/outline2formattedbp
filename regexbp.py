@@ -29,6 +29,9 @@ with open(args["input"], "r+") as f:
 			findPattern = rs[0]
 			replacePattern = rs[1]
 
+			#print("DEBUG")
+			#print(rs)
+
 			# perform the regex replacement
 			line = re.sub(findPattern, replacePattern, line)
 

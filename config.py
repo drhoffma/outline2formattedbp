@@ -5,11 +5,14 @@
 # regular expression strings in format [(find, replace), (find2, replace2)...]
 regexStrings = [
 
-	(r"Codeblock #([0-9].*): Lines (.*)-(.*) (.*)",
-	 r"""\n<pre class="start-line:\g<2> lang:python decode:true " title="@TITLE@">Codeblock \g<1> Lines \g<2>-\g<3></pre>\n\n\g<4>"""),
+	(r"""\<div.*\>""",
+	 r""""""),
 
-	(r"</*div.*",
-	 r""),
+	(r"""\<\/div\>""",
+	 r""""""),
+
+	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
+	 r"""\g<1>\n\n<pre class="start-line:\g<3> lang:python decode:true " title="@TITLE@">Codeblock \g<2> Lines \g<3>-\g<4></pre>\n\n\g<5>"""),
 
 	(r"JUMP TO CODE DOWNLOAD",
 	 r"[jump_to_code_download]"),
@@ -21,8 +24,8 @@ regexStrings = [
 	 r"""Review project structure\n\n<pre class="start-line:1 lang:shell decode:true " title="@TITLE@">$ tree --dirsfirst --filelimit 10
 output</pre>\n\n...\n"""),
 
-	(r"(.*), (.*) in the form below!",
-	 r"<strong>\g<1>, <em>\g<2> in the form below!</em></strong>"),
+	(r"""(.*), (.*) in the form below!""",
+	 r"""<strong>\g<1>, <em>\g<2> in the form below!</em></strong>\n\n[code_download_form action="" formid=""]"""),
 
 	(r"—",
 	 r"--"),
@@ -30,7 +33,7 @@ output</pre>\n\n...\n"""),
 	(r"Figure X",
 	 r"<strong>Figure X</strong>"),
 
-	(r"Downloads",
+	(r""".Downloads.""",
 	 r"""<strong><em>"Downloads"</em></strong>"""),
 
 	(r"`(.*).py`",
@@ -49,6 +52,30 @@ output</pre>\n\n...\n"""),
 	 r"<li><\g<2></li>"),
 
 	(r"([1-9])x([1-9])",
-	 r"<em>\g<1>x\g<2></em>")
+	 r"<em>\g<1>x\g<2></em>"),
+
+	(r"""\<a href="(.*?)"\>(.*\>)\<\/a\>""",
+	 r"""\<a href="\g<1>" target="_blank" rel="noopener">\g<2>\<\/a\>"""),
+
+	(r"""\<span style="font-weight: bold;"\>(.*?)\<\/span\>""",
+	 r"""\<strong\>\g<1>\<\/strong\>"""),
+
+	(r"""\<span style="font-style: italic;"\>(.*?)\<\/span\>""",
+	 r"""\<em>\g<1></em>"""),
+
+	(r"""\<span style="font-weight: bold; font-style: italic;"\>(.*?)\<\/span\>""",
+	 r"""<strong><em>\g<1></em></strong>"""),
+
+	(r"""\<span style="font-weight: bold; font-size: 24px;"\>(.*?)\<\/span\>""",
+	 r"""\n<h2>\g<1></h2>\n"""),
+
+	(r"""\<span style="font-weight: bold; font-size: 18px;"\>(.*?)\<\/span\>""",
+	 r"""\n\<h3\>\g<1>\<\/h3\>\n"""),
+
+	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
+	 r"""\n<pre class="start-line:1 lang:shell decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>""")
+
+
+
 
 ]
