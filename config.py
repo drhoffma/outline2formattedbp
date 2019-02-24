@@ -36,11 +36,11 @@ output</pre>\n\n...\n"""),
 	(r""".Downloads.""",
 	 r"""<strong><em>"Downloads"</em></strong>"""),
 
-	(r"`(.*).py`",
+	(r"`(.*?).py`",
 	 r"""<span class="lang:sh decode:true crayon-inline">\g<1>.py</span>"""),
 
-	(r" `(.*)` ",
-	 r""" <span class="lang:python decode:true  crayon-inline ">\g<1></span> """),
+	(r"""\`(.*?)\`(.?)""",
+	 r"""<span class="lang:python decode:true  crayon-inline ">\g<1></span>\g<2>"""),
 
 	(r"Summary",
 	 r"<h2>Summary</h2>"),
@@ -73,9 +73,15 @@ output</pre>\n\n...\n"""),
 	 r"""\n\<h3\>\g<1>\<\/h3\>\n"""),
 
 	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>""")
+	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>"""),
 
+	(r"""\(x, y\)-(.*) """,
+	 r"""<em>(x, y)</em>-\g<1> """),
 
+	(r"""Line (\d*)""",
+	 r"""<strong>Line \g<1></strong>"""),
 
+	(r"""Lines (\d*)-(\d*)""",
+	 r"""<strong>Lines \g<1>-\g<2></strong>""")
 
 ]
