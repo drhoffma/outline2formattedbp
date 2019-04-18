@@ -5,10 +5,10 @@
 # regular expression strings in format [(find, replace), (find2, replace2)...]
 regexStrings = [
 
-	(r"""\<div.*\>""",
+	(r"""\<div.*?\>""",
 	 r""""""),
 
-	(r"""\<\/div\>""",
+	(r"""\<\/div.*?\>""",
 	 r""""""),
 
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
@@ -54,8 +54,26 @@ output</pre>\n\n...\n"""),
 	(r"([1-9])x([1-9])",
 	 r"<em>\g<1>x\g<2></em>"),
 
+	(r"""\<i\>(.*)\<\/i\>""",
+	r"""<em>\g<1></em>"""),
+
+	(r"""\<p .*?\>(.*)\<\/p\>""",
+	r"""\g<1>"""),
+
+	(r"""\<b\>(.*)\<\/b\>""",
+	r"""<strong>\g<1></strong>"""),
+
+	(r"""\<b\>\<em\>(.*)\<\/em\><\/b\>""",
+	r"""<strong><em>\g<1></em></strong>"""),
+
 	(r"""\<a href="(.*?)"\>(.*\>)\<\/a\>""",
 	 r"""\<a href="\g<1>" target="_blank" rel="noopener">\g<2>\<\/a\>"""),
+
+	(r"""\<span class.*?\>(.*)\<\/span\>""",
+	r"""\g<1>"""),
+
+	(r"""\<span class.*?\>(.*)\<\/span\>""",
+	r"""\g<1>"""),
 
 	(r"""\<span style="font-weight: bold;"\>(.*?)\<\/span\>""",
 	 r"""\<strong\>\g<1>\<\/strong\>"""),
@@ -82,6 +100,29 @@ output</pre>\n\n...\n"""),
 	 r"""<strong>Line \g<1></strong>"""),
 
 	(r"""Lines (\d*)-(\d*)""",
-	 r"""<strong>Lines \g<1>-\g<2></strong>""")
+	 r"""<strong>Lines \g<1>-\g<2></strong>"""),
+
+	# MARKDOWN
+	(r"""## (.*)""",
+	 r"""<h2>\g<1></h2>"""),
+
+	(r"""### (.*)""",
+	 r"""<h3>\g<1></h3>"""),
+
+	(r"""_(.*)_""",
+	 r"""<em>\g<1></em>"""),
+
+	(r""" \*([a-zA-Z].*?)\* """,
+	 r"""<em>\g<1></em>"""),
+
+	(r"""\*\*(.*)\*\*""",
+	 r"""<strong>\g<1></strong>"""),
+
+	(r"""\[(.*)\]\((.*)\)""",
+	 r"""<a href="\g<2>" target="_blank" rel="noopener">\g<1></a>"""),
+
+	(r"""```\n((.*\n)*?)```\n\n""",
+	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">\g<1></pre>\n\n""")
+
 
 ]

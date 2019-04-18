@@ -51,7 +51,7 @@ with open(args["output"], "r") as o:
 	lines = re.sub(r"\n\s*\n", "\n\n", lines)
 
 	# new lines for the start of sentences (Wordpress spacing)
-	lines = re.sub(r".\n([A-Z])", ".\n\n\g<1>", lines)
+	lines = re.sub(r"\.\n([A-Z])", ".\n\n\g<1>", lines)
 
 	# add the title to code blocks (a hack...see the config.py)
 	lines = re.sub(r"@TITLE@", args["title"], lines)
