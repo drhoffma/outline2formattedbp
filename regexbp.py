@@ -11,7 +11,7 @@ ap.add_argument("-i", "--input", type=str, required=True,
 	help="path to input text file")
 ap.add_argument("-o", "--output", type=str, required=True,
 	help="path to output text file"),
-ap.add_argument("-t", "--title", type=str,
+ap.add_argument("-t", "--title", type=str, default=None,
 	help="the blog post title")
 args = vars(ap.parse_args())
 
@@ -77,8 +77,9 @@ with open(args["output"], "r") as o:
 	# new lines for the start of sentences (Wordpress spacing)
 	lines = re.sub(r"\.\n([A-Z])", ".\n\n\g<1>", lines)
 
-	# add the title to code blocks (a hack...see the config.py)
-	lines = re.sub(r"@TITLE@", args["title"], lines)
+	if args["title"] is not None:
+		# add the title to code blocks (a hack...see the config.py)
+		lines = re.sub(r"@TITLE@", args["title"], lines)
 
 
 # open the file for writing and write the lines
