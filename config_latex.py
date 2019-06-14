@@ -10,11 +10,11 @@ regexStrings = [
 
 	# minted Codeblock Python
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
-	 r"""\\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=\g<3>,linenos\]{python}\nCodeblock \g<2>: Lines \g<3>-\g<4>\n\\end{minted}"""),
+	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=\g<3>,linenos]{python}\nCodeblock \g<2>: Lines \g<3>-\g<4>\n\\end{minted}"""),
 
 	# Project Structure
 	(r"\\section\{Project Structure\}",
-	 r"""\\section{Project Structure}\n\nReview project structure\n\n\\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
+	 r"""\\section{Project Structure}\n\nReview project structure\n\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
 
 	(r"—",
 	 r"--"),
@@ -31,7 +31,7 @@ regexStrings = [
 
 	# console COMMAND OUTPUT
 	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}\n\n\\end{minted}\n"""),
+	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\n\n\\end{minted}\n"""),
 
 	# italics (x, y)-coordinates
 	(r""" \(x, y\)-(.*) """,
@@ -58,12 +58,12 @@ regexStrings = [
 	 r""" \\textit{\g<1>} """),
 
 	# preformatted CL arg
-	(r""" `--(.*?)` """,
-	 r""" \\texttt{-{}-\g<1>} """),
+	(r"""`--(.*?)`""",
+	 r"""\\texttt{-{}-\g<1>}"""),
 
 	# preformatted filename
-	(r" `(.*?).py` ",
-	 r""" \\texttt{\g<1>.py} """),
+	(r"`(.*?).py`",
+	 r"""\\texttt{\g<1>.py}"""),
 
 	# preformatted
 	(r""" `(.*?)` """,
