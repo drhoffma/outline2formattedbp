@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # NOTE: in Sublime Text, "(groups) in regex" are "$1 in regex".
 #             in Python, "(groups) in regex" are "\g<1> in regex".
+# IMPORTANT: the \t in \textXX must be double escaped to escape the \ and the \t to prevent a tab from being inserted!
+#				*\\\\t*
 
 
 # regular expression strings in format [(find, replace), (find2, replace2)...]
@@ -32,8 +34,8 @@ regexStrings = [
 	 r"""\\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}\n\n\\end{minted}\n"""),
 
 	# italics (x, y)-coordinates
-	(r"""\(x, y\)-(.*) """,
-	 r"""\\textit{\(x, y\)}-\g<1> """),
+	(r""" \(x, y\)-(.*) """,
+	 r""" \\textit{\(x, y\)}-\g<1> """),
 
 	# bold Line X
 	(r"""\*\*Line (\d*)\*\*""",
@@ -60,11 +62,11 @@ regexStrings = [
 	 r""" \\texttt{-{}-\g<1>} """),
 
 	# preformatted filename
-	(r"`(.*?).py`",
-	 r"""\\texttt{\g<1>.py}"""),
+	(r" `(.*?).py` ",
+	 r""" \\texttt{\g<1>.py} """),
 
 	# preformatted
 	(r""" `(.*?)` """,
-	  """ \\texttt{\g<1>} """)
+	 r""" \\texttt{\g<1>} """)
 
 ]

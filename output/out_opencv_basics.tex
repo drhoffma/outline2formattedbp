@@ -1,0 +1,655 @@
+%------------------------------------------------------------------------------------
+%   CHAPTER: CHAPTER TEMPLATE
+%------------------------------------------------------------------------------------
+\chapter{A Brief Tutorial on OpenCV}\label{ch:hobbyist:opencv_basics}
+
+Before we can start implementing computer vision applications on the Raspberry Pi, we first need to review the basics of the OpenCV library, including common functions and techniques that will be used throughout the rest of this text.
+
+% todo link
+% todo citation
+This chapter is \textit{not} meant to be an exhaustive review of the OpenCV library nor a review of the computer vision field as a whole. If you would like a deeper review of OpenCV I would definitely suggest reading through my previous book, \textit{Practical Python and OpenCV} [CITE/LINK]. And for an in-depth dive into not only OpenCV, but the computer vision field as a whole, you should refer to the PyImageSearch Gurus course [CITE/LINK].
+
+Let’s get started!
+
+%------------------------------------------------------------------------------------
+
+\section{Chapter Learning Objectives}
+
+In this chapter you will:
+
+\begin{enumerate}
+    \item Learn about basic image processing operations with OpenCV (i.e., resizing, rotation, blurring, etc.).
+    \item Discover how to count basic object shapes using contours.
+    \item Perform image subtraction.
+    \item Utilize OpenCV for face and object detection.
+\end{enumerate}
+
+%------------------------------------------------------------------------------------
+\section{Project Structure}
+
+Review project structure
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+PROJECT STRUCTURE
+\end{minted}
+
+Before we get started, let’s first review the directory structure for this project:
+
+DIRECTORY STRUCTURE
+
+We’ll be reviewing four Python scripts:
+
+\begin{itemize}
+    \item `basics.py`: Contains our implementation of basic image processing operations so we can obtain hands-on experience with them.
+    \item `count_shapes.py`: Performs shape counting via OpenCV and contour/outline detection.
+    \item `image_sub.py`: Utilizes image background to segment the background of a scene from the foreground.
+    \item `detect_faces.py`: Detects faces in video streams.
+\end{itemize}
+
+The \texttt{.xml} file is Haar cascade [REF] that has been trained by the OpenCV library and then serialized to disk.
+
+We’ll load the model and then use it to perform face detection inside `detect_faces.py`.
+
+The \texttt{images} directory contains various images that we’ll be using as examples inside this chapter.
+
+%------------------------------------------------------------------------------------
+
+\section{OpenCV Basics}
+
+% todo link
+% todo citation
+In this section you will learn about basic image processing operations using OpenCV and Python. This section is a shorter, condensed version of my \textit{OpenCV Tutorial: A Guide to Learn OpenCV} which you can find on the PyImageSearch blog [LINK/REF].
+
+Use this section to quickly help you learn the basics, but be sure to refer to either the above mentioned tutorial or \textit{Practical Python and OpenCV} [LINK/REF] for a more in-depth review.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Loading an Image with OpenCV}
+
+Let’s begin by learning how to load an image from disk and then access individual pixel values.
+
+Open up the \texttt{opencv_basics.py} file and insert the following code:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+Codeblock 1: Lines 1-12
+\end{minted}
+
+On \textbf{Lines 2-4} we import `imutils`, `cv2`, and `os`.
+
+\begin{enumerate}
+    \item The \texttt{cv2} import is the actual OpenCV library.
+    \item \texttt{imutils} contains a series of convenience functions that make performing basic image processing with OpenCV a bit easier.
+    \item And the built-in Python \texttt{os} module allows us to easily build file paths.
+\end{enumerate}
+
+Now that we have the required packages at our fingertips, let’s load an image from disk into memory.
+
+We start on \textbf{Line 9} by building the path to our input image. The input image we wish to load is named \texttt{30th_birthday.png}  and resides in the \texttt{images} directory of the project. Using the \texttt{os} Python we construct the path to the input image, ensuring that the code will run on the RPi, Linux, macOS, or even Windows system (since Unix and Windows use different path separators). Given the input path, `p`, we can load the image using `cv2.imread`. As you can see from \textbf{Line 10}, we assign the result to `image`.
+
+Our image is actually just a NumPy array. Every NumPy array has a \texttt{.shape} attribute, which corresponds to the dimensions of the NumPy matrix -- we extract the height, width, and depth of the \texttt{image} on \textbf{Line 11} and then display the dimensions to our screen on **Line 12.**
+
+It may seem a bit confusing that the height comes \textit{before} the width in the `shape`, but think of it this way:
+
+\begin{enumerate}
+    \item We describe matrices by *# of rows x # of columns*
+    \item The number of \textit{rows} is our *height*
+    \item And the number of \textit{columns} is our *width*
+\end{enumerate}
+
+Therefore, the dimensions of the image, represented by a NumPy array, are ordered in terms of *(height, width, depth). The depth is the number of channels in the image -- in our case, it’s \texttt{3} as we’re working with three color channels: Red, Green, and Blue.
+
+If you were to execute the script, you would see the output of the \texttt{print} statement on \textbf{Line 10} to be:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+
+\end{minted}
+
+IMAGE
+
+To display the image on the screen using OpenCV we utilize the \texttt{cv2.imshow} function (\textbf{Line 16}).
+
+The subsequent line waits for a keypress using `cv2.waitKey`.
+
+We need to include the \texttt{cv2.waitKey} call, otherwise our image would display and then automatically close.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Accessing Individual Pixel Values}
+
+All images consist of pixels which are the raw building blocks of images. Images are made of pixels in a grid. A \textit{640 x 480} image has 640 columns (the width) and 480 rows (the height). There are \textit{640 x 480 = 307,200} pixels in an image with those dimensions.
+
+Each pixel in a grayscale image has a value representing the shade of gray. In OpenCV, there are 256 shades of gray, from \textit{0} to *255*, respectfully.
+
+Pixels in color have additional information.
+
+There are several color spaces in image processing, but the most used one (and the most familiar) is the RGB (Red, Green, Blue) color space. In OpenCV, color images in the RGB color space have a 3-tuple associated with each pixel: `(B, G, R`). Notice the ordering is BGR rather than RGB. This ordering is dates back to when OpenCV was first being developed many years ago. Back then BGR was the standard ordering. Over the years, the standard has now become RGB, but OpenCV still maintains this “legacy” BGR ordering to ensure no existing code breaks. Each value in the BGR 3-tuple has a range of `[0, 255`].
+
+How many color possibilities are there for each pixel in an RGB image with OpenCV?
+
+It just takes a bit of math to figure that out:
+*256 x 256 x 256 = 16,777,216*
+
+Now that we know exactly what a pixel is, let’s see how to retrieve the value of an individual pixel in an image:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=19,linenos\]{python}
+Codeblock 2: Lines 19-13
+\end{minted}
+
+As shown previously, our input image has a width of 600px, height of 457px, and depth of 3 pixels.
+
+We can access individual pixel values in the array by specifying the coordinates, so long as they are within the mix width and height. The code \texttt{image[200, 430]} yields a 3-tuple of BGR values from the pixel located at \texttt{x=430} and \texttt{y=200} (again, keeping in mind that the \textit{height} is the number of \textit{rows} and the \textit{width} is the number of \textit{columns} -- take a second now to convince yourself this is true).
+
+The resulting pixel value from \textbf{Lines 22 and 23} would be:
+
+OUTPUT
+
+IMAGE Arrow pointing to jeep?
+
+This pixel value corresponds to the “red” in the Jurassic Park logo on the jeep.
+
+Notice the red component is almost fully saturated, the green value is zero, and the blue value is small, indicating that we do indeed have a shade of red.
+
+%------------------------------------------------------------------------------------
+
+ \subsection{Array Slicing and Cropping}
+
+% todo add image
+IMAGE Left: Arrow pointing to myself in image Right: Extracted ROI
+
+Extracting “regions of interest” (ROI) is an important skill to have for image processing. In this example I will show you how to extract the person on the right (me) from our input image (Figure \ref{fig:bundle:TBD} [REF], *left*).
+
+Let’s continue on with our coding:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=25,linenos\]{python}
+Codeblock 3: Lines 25-29
+\end{minted}
+
+Array slicing is shown on \textbf{Line 27} with the format: `image[startY:endY, startX:endX]`.
+
+This code grabs the ROI which we then display to our screen on \textbf{Lines 28 and 29}.
+
+% todo figure ref
+As you can see from the output (Figure \ref{fig:bundle:TBD} [REF], *right*), we have successfully extracted me from the image.
+
+So, how did I determine those starting and ending coordinates?
+
+I actually determined them by manually examining the *(x, y)*-coordinates in Photoshop.
+
+% todo add section ref
+In Section \ref{sec:TBD} you will learn how to \textit{automatically} determine these coordinates.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Resizing Images}
+
+% todo add image
+IMAGE Left: Original image, Middle: Fixed resizing, Right: Aspect-aware resizing Resizing an image is important for a number of reasons.
+
+First, you might want to resize a larger image to fit on your screen.
+
+Secondly, image processing is also faster on smaller because as there are fewer pixels to process.
+
+In the case of deep learning, we often resize images, ignoring aspect ratio, so the volume fits into a network which requires an image be square and of a certain image.
+
+Lets’ resize our image to *300x300px*, ignoring aspect ratio:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=31,linenos\]{python}
+Codeblock 4: Lines 31-34
+\end{minted}
+
+In Figure \ref{fig:bundle:TBD} [REF] \textit{(left)} you can see our original image and then in the \textit{middle} you can see the image has been resized; however, the image is not distorted as we did not take into account the aspect ratio.
+
+Using the \texttt{imutils.resize} function we can resize an image while *automatically maintaining the aspect ratio:*
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=36,linenos\]{python}
+Codeblock 5: Lines 36-39
+\end{minted}
+
+% todo figure ref
+As Figure \ref{fig:hobbyist:TBD} \textit{(right)} shows, our image has now been resized have a width of 300px, but this time ensuring the height is resized proportionally, maintaing the aspect ratio.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Rotating Images}
+
+% add image
+IMAGE: Rotated image
+
+For this next example we are going to rotate our input image:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=41,linenos\]{python}
+Codeblock 6: Lines 41-44
+\end{minted}
+
+The \texttt{imutils.rotate} function accepts an input \texttt{image} along with the number of degrees to rotate the image.
+
+**Positive values correspond to clockwise rotation** and \textbf{negative angles to clockwise rotation} -- here we are rotating our images \textit{-45} degrees, clockwise.
+
+% todo add figure ref
+The output of the rotation can be seen in Figure \ref{fig:hobbyist:TBD} [REF].
+
+Note how our image has been successfully rotated; however, parts of the image are cut off -- this behavior is due to the fact that OpenCV does not \textit{automatically} resize the image matrix to hold the full rotated image.
+
+In some cases this behavior is acceptable and in other cases it is not.
+
+If you need to have the \textit{entire} image after rotation you can use the \texttt{imutils.rotate_bound} which is covered in the following tutorial [REF/LINK].
+
+%------------------------------------------------------------------------------------
+
+\subsection{Blurring Images}
+
+% todo add image
+IMAGE Blurred image
+
+In many image processing pipelines, we must blur an image to reduce high-frequency noise, making it easier for our algorithms to detect and understand the actual \textit{contents} of the image rather than just \textit{noise} that will “confuse” our algorithms.
+
+Blurring and smoothing an image is a very easy in OpenCV.
+
+One of the most common methods you’ll encounter is Gaussian blurring:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=46,linenos\]{python}
+Codeblock 7: Lines 46-50
+\end{minted}
+
+Here we perform a Gaussian blur with an \textit{11 x 11} kernel, the result of which is shown in Figure \ref{fig:bundle:TBD} [REF].
+
+Larger kernels would yield a more blurry image, smaller kernels a less blurry image.
+
+% todo add link (2X)
+% todo add citation (2X)
+To read more about kernels and their role on computer vision and image processing, refer to this tutorial [CITE/LINK], along with the PyImageSearch Gurus course [CITE/LINK].
+
+%------------------------------------------------------------------------------------
+
+\subsection{Drawing Methods}
+
+% todo add image
+IMAGE Output of drawing
+
+In this section you are going to learn how to draw a rectangle, circle, and line on an input image.
+
+You’ll also learn how to overlay text on an image as well.
+
+Let’s see how we can perform those operations now:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=52,linenos\]{python}
+Codeblock 8: Lines 52-60
+\end{minted}
+
+On \textbf{Line 64} we draw a rectangle on our \texttt{image} via the \texttt{cv2.rectangle} function. Here we supply the input `image`, the starting *(x, y)*-coordinates of the rectangle, the ending *(x, y)*-coordinates of the rectangle, the color of the rectangle (in BGR ordering), and finally the thickness of the rectangle.
+
+When executed, this code will draw a purple rectangle surrounding myself in the image (Figure \ref{fig:bundle:TBD} [REF]).
+
+\textbf{Line 55} draws a circle via the \texttt{cv2.circle} function. This method requires that we pass in the input `image`, the center *(x, y)*-coordinates of the circle, the radius of the circle, the color of the circle, and finally the thickness of a circle. Using a negative value for the thickness indicates that the circle should be drawn *filled in.*
+
+% todo add figure ref
+Looking at Figure \ref{fig:hobbyist:TBD} [REF] you can see that we have drawn a blue circle overtop the Jurassic Park logo on the jeep.
+
+\textbf{Line 56} draws a line on our image. Similar to the \texttt{cv2.rectangle} function, we must supply the `image`, the starting *(x, y)*-coordinates of the line, the ending *(x, y)*-coordinates of the line, the color of the line, and finally the thickness.
+
+% todo add figure ref
+Figure \ref{fig:TBD} [REF] shows that we have drawn a red line from the upper-left corner of the image to the bottom-right corner.
+
+Finally, \textbf{Lines 57 and 58} enable us to draw text on our image via the \texttt{cv2.putText} function. This method requires that we pass in the input \texttt{image} to draw on, the text string itself, the *(x, y)*-coordinates of where the text is to start, the font type, font size, BGR color tuple, and finally the thickness.
+
+% todo add figure ref
+Again, refer to Figure \ref{fig:hobbyist:TBD} [REF] to see that we have drawn the text \textit{“You’re learning OpenCV!”} in the bottom-left corner of the image.
+
+We’ll be using these drawing functions throughout the text so take a second now to play around with them and familiarize yourself with how they work.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Counting Objects}\label{ch:hobbyist:opencv_basics:counting}
+
+Now that we’ve learned about basic OpenCV functions, let’s put them to work to build a complete image processing application used to count the number of objects in the image.
+
+Open up the \texttt{count_shapes.py} file in your directory structure and insert the following code:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+Codeblock 1: Lines 1-10
+\end{minted}
+
+\textbf{Lines 2-4} handle our imports while \textbf{Lines 7-10} parse our command line arguments. We only need a single argument here, `--image`, which is the path to our input image.
+
+Given the path to the input image, let’s load it from disk, and utilize our image processing functions from Section X [REF] to prepare it for object counting:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=12,linenos\]{python}
+Codeblock 2: Lines 12-19
+\end{minted}
+
+% todo add fig
+IMAGE Left: Original image, Middle: Blurred, Right: Edged
+
+On \textbf{Line 13} we load our input \texttt{image} from disk.
+
+As you can see from Figure \ref{fig:bundle:TBD} *(left)*, we’ll be building a simple shape counting application. Using OpenCV, we’ll be able to count the number of shapes in the image.
+
+But before we can do that, we first need to preprocess the image:
+
+\begin{itemize}
+    \item We first convert the image to grayscale on **Line 14.**
+    \item Given the grayscale image, we blur it on \textbf{Line 18} to help reduce noise and false-positive shape detections (Figure \ref{fig:bundle:TBD}, *middle*).
+    \item The final preprocessing step is to take the \texttt{blur} image and apply \textbf{edge detection} (\textbf{Line 19}). Edge detection reveals the outlines/boundaries of each shape in the image (Figure \ref{fig:bundle:TBD}, *right*).
+\end{itemize}
+
+At this point we have been able to successfully identify the outlines of each shape in the image -- \textbf{but how do we actually} \textit{**access**} \textbf{these outlines and then} \textit{**count**} **them?**
+
+The solution is to apply **contour detection:**
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=21,linenos\]{python}
+Codeblock 3: Lines 21-26
+\end{minted}
+
+\textbf{Lines 23 and 24} perform contour detection via the \texttt{cv2.findContours} function. This method processes the \texttt{edged} image and accumulates a list of *(x, yI*-coordinates for each separate outline.
+
+Since the return signature of the \texttt{cv2.findContours} function is different between OpenCV 2.4, OpenCV 3, and OpenCV 4, we use the \texttt{imutils.grab_contours} method to parse the returned tuple and return our list of contours (\textbf{Line 25}).
+
+Finally, \textbf{Line 26} initialize an integer, `total`, which will be used to count the total number of shapese in the image.
+
+Let’s now perform the shape counting:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos\]{python}
+Codeblock 4: Lines 28-38
+\end{minted}
+
+On \textbf{Line 29} we loop over each of the contours.
+
+\textbf{Line 32} computes the area of the contour and checks to see if the contour is smaller than 25 pixels. Even though we blurred our image, it’s possible that noisy, false-positive detections slipped through -- checking the contour area and ignoring regions with a small area (via the \texttt{continue} call on \textbf{Line 33}) is a good way to help reduce these false-positive detections.
+
+Provided our contour, \texttt{c`, passes the area test, we then draw it on our `image} via the \texttt{cv2.drawContours} function (\textbf{Line 37}).
+
+The \texttt{total} object count is then incremented on \textbf{Line 38}.
+
+The final step is to show the output image and final object count:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=40,linenos\]{python}
+Codeblock 5: Lines 40-43
+\end{minted}
+
+To execute the \texttt{count_shapes.py} script, just execute the following command:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+
+\end{minted}
+
+% todo add fig
+IMAGE
+
+% todo add fig ref
+Figure \ref{fig:hobbyist:TBD} [REF] displays our output image.
+
+Note how our script has successfully (1) counted each of the N (todo: Insert count) shapes and then (2) drawn the outline of each shape on the image.
+
+While a basic image processing technique, contour detection is a computationally efficient technique that can easily run in real-time on the Raspberry Pi.
+
+As we’ll see in Chapter X [REF], we’ll be able to build an entire motion detection/home surveillance system using contour detection techniques.
+
+% todo add citation
+% todo add link
+Finally, if you are interested in learning more about contours, including more advanced contour techniques that can even recognize and identify \textit{the type of shape} in our example image, be sure to take a look at this post on the PyImageSearch blog [CITE/LINK]. That tutorial will give you additional experience working with contours and associated contour properties.
+
+%------------------------------------------------------------------------------------
+
+\subsection{Image Subtraction}
+
+% todo add fig
+IMAGE Left: Background, Right: Foreground
+
+One of the most common methods to perform background subtraction is via **image subtraction.**
+
+When performing background subtraction we make the assumption that we have two images -- the \textbf{background} and the \textbf{foreground.} \textit{*The background is assumed to be a static representation of the scene*} (i.e., without any motion or objects that we wish to detect).
+
+An example of such an image can be seen in Figure \ref{fig:bundle:TBD} \textit{(left)} -- this image is captured from the computer on my desk in my office. I wish to use image subtraction to detect if anyone is sitting at my desk and using my computer.
+
+**The foreground image contains any potential objects or regions of interest that we want to detect.**
+
+% todo fig ref
+Figure \ref{fig:hobbyist:TBD} \textit{(right)} shows an example of a foreground image (i.e., myself sitting at my computer).
+
+Using image subtraction we’ll actually be able to \textbf{*detect*} the differences between the two images and  even \textbf{*locate*} where in the image the difference is.
+
+Let’s get started!
+
+Open up the \texttt{image_sub.py} file and insert the following code:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+Codeblock 1: Lines 1-13
+\end{minted}
+
+\textbf{Lines 2-5} handle our imports while \textbf{Lines 8-13} parse our command line arguments. We’ll need two arguments for this script:
+
+\begin{itemize}
+    \item `--bg`: The path to the \textit{background} image.
+    \item `--fg`: The path to the \textit{foreground} image.
+\end{itemize}
+
+Next, let’s load these two images from disk and convert them to grayscale:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=15,linenos\]{python}
+Codeblock 2: Lines 15-21
+\end{minted}
+
+The grayscale background and foreground images can be seen in Figure \ref{fig:bundle:TBD} \textit{(left)} [REF].
+
+% todo add fig
+IMAGE Left: Grayscale images, Middle: Background subtraction, Right: Threshold
+
+Given both the grayscale representations of the \texttt{bg} and `fb`, we can perform image subtraction:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos\]{python}
+Codeblock 3: Lines 23-26
+\end{minted}
+
+On \textbf{Line 25} we subtract the foreground from the background.
+
+We convert the images to 32-bit integers first to ensure we can have \textit{negative} values in the image (by default, OpenCV represents images as 8-bit unsigned integers which cannot take on negative values).
+
+Once we have the `sub`, we then take the absolute value (so we have absolute pixel differences) and then convert back to the 8-bit unsigned integer type that OpenCV expects.
+
+The output of the background subtraction can be seen in Figure \ref{fig:bundle:TBD} [REF] \textit{(middle)} -- note the “ghost-like” effect in the image. This “ghostiness” represents the absolute pixel value differences between the grayscale images. Regions of the image that are \textbf{*dark*} contain \textbf{*no difference*} while regions of the image that are \textbf{*light*} are regions that ***do contain difference.***
+
+Gradients between white and black represent varying levels of difference.
+
+In order to actually detect and extract the regions of the image that contain difference, we’ll be using contour detection, just as we did in Section \ref{ch:hobbyist:opencv_basics:counting}.
+
+The issue here is that contour detection assumes we are working with a \textbf{binary image.} A binary image only contains two pixel values -- \texttt{0} (black, for background), and \texttt{255} (white, for foreground). But as you can see, our \texttt{sub} image is grayscale, having pixel values that can range between `0-255`.
+
+In order to apply contour detection we need to take this grayscale image and then binarize it.
+
+The solution?
+
+Use thresholding to take the \texttt{sub} grayscale image and binarize it:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos\]{python}
+Codeblock 4: Lines 28-35
+\end{minted}
+
+\textbf{Lines 30 and 31} perform thresholding via Otsu’s thresholding method [CITE].
+
+This method allows us to \textit{automatically} threshold the image into background/foreground \textit{without} having to worry about tuning parameters.
+
+After thresholding, the \texttt{thresh} image is not binary, with values of \texttt{0} being background and values of \texttt{255} belonging to the foreground; however, we’re not quite done yet.
+
+We first apply an \textit{erosion} that will “eat away” at the foreground, allowing us to remove noise (\textbf{Line 34}).
+
+After erosion, it’s common to apply a \textit{dilation} which “regrows” the foreground (\textbf{Line 35}).
+
+Provided that the erosion removed the noise, we don’t need to worry about regrowing it via the dilation.
+
+% todo add fig ref
+The output of the thresholding, erosion, and dilation operations can be seen in Figure \ref{fig:bundle:TBD} [REF].
+
+Notice how we have a series of white blobs on a black ground -- these white blobs represent the actual \textit{foreground difference} between our images.
+
+The next step is to take this \texttt{thresh}  image, and then apply contour detection to extract each of the individual regions:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=37,linenos\]{python}
+Codeblock 5: Lines 37-43
+\end{minted}
+
+On \textbf{Lines 39-41} we perform contour detection, just like in Section X [REF].
+
+\textbf{Lines 43 and 44} define four variables which will be used to compute a bounding box that encompasses \textbf{*all*} foreground regions, thereby giving us a rectangular region that contains all significant differences between the background and foreground.
+
+To see how we can update these values, let’s move on to the next code block:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=45,linenos\]{python}
+Codeblock 6: Lines 45-56
+\end{minted}
+
+On \textbf{Line 46} we loop over all contours found in the \texttt{thresh} image.
+
+For each contour, \texttt{c`, we compute the bounding box rectangle via the `cv2.boundingRect} function.
+
+The \texttt{cv2.boundingRect} function examines the \textit{(x, y)*-coordinates of the contour and then computes the *smallest possible rectangle} that encompasses \textit{all} of the coordinates.
+
+Therefore, this method returns four values:
+
+\begin{itemize}
+    \item `x`: The starting *x*-coordinate of the rectangle.
+    \item `y`: The start *y*-coordinate of the rectangle.
+    \item `w`: The width of the rectangle.
+    \item `h`: The height of the rectangle.
+\end{itemize}
+
+\textbf{Line 51} checks to ensure that the bounding box has a minimum width and height of 20 pixels, respectively (to help filter out small regions of noise).
+
+Provided the width and height pass the test, we update our bookkeeping variables on \textbf{Lines 53-56}.
+
+Using this combination of \texttt{min} and \texttt{max} functions we can determine the smallest possible rectangular region that encompasses \textit{all} bounding boxes -- take a second now to convince yourself of this operation.
+
+Our final code block handles drawing the minimum enclosing rectangle on the \texttt{fg} and displaying it to our screen:
+
+Codeblock #7: LInes 58-63
+
+To execute this script, open up a command line and execute the following command:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+
+\end{minted}
+
+% todo add fig
+IMAGE
+
+% todo add fig ref
+Figure \ref{fig:hobbyist:TBD} [REF] visualizes our output -- notice how we have successfully located the difference between the two images (i.e., me sitting in the chair in front of my desk).
+
+% todo add ch ref
+As we’ll see in Chapter \ref{ch:hobbyist:TBD} [REF], these techniques, will simplistic, make it possible to build motion detection and home surveillance systems with minimal effort.
+
+%------------------------------------------------------------------------------------
+
+\subsection{bject and Face Detection}
+
+The final script we’ll be reviewing today is `detect_faces.py`. As the name suggests, this script will be used to detect the presence of faces in an image.
+
+We’ll be using OpenCV’s Haar cascades for face detection as they are \textit{built into the library} and do not require us to train the model (which is a more advanced technique).
+
+Keep in mind that \textbf{face detection} is different than **face recognition**.
+
+When performing face detection, we’re simply locating the bounding box coordinates of an image where a face is found -- face detection does not tell us \textit{anything} about the actual \textit{identity} of the face.
+
+Face recognition on the other hand:
+
+\begin{itemize}
+    \item Accepts an input face (which was found via face detection).
+    \item And then performs the actual identification of the person.
+\end{itemize}
+
+Face detection is thus a necessary step \textit{before} face recognition can be applied.
+
+We’ll be covering face recognition on the Raspberry Pi inside the \textit{Hacker Bundle} of this text.
+
+All that said, let’s learn how to perform face detection with OpenCV!
+
+Open up the \texttt{detect_faces.py} file in the project structure and insert the following code:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+Codeblock 1: Lines 1-11
+\end{minted}
+
+\textbf{Lines 2 and 3} handle our imports while \textbf{Lines 5-9} parse our command line arguments.
+
+We need to supply two command line argument to our script:
+
+\begin{itemize}
+    \item `--image`: The path to our input image we wish to apply face detection on.
+    \item \texttt{-{}-detector`: The path to the face detector `.xml} model.
+
+Given the path to our input image we can load it from disk and then convert it to grayscale:
+
+Codeblock #2: 13-15
+
+We are now ready to perform face detection on the \texttt{gray} image:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=17,linenos\]{python}
+Codeblock 3: Lines 17-21
+\end{minted}
+
+We load our face \texttt{detector} from disk on **Line 18.**
+
+The type of face detector we’re using is called a \textbf{Haar cascade} and where introduced by Viola and Jones in their 2001 paper, *Rapid Object Detection using a Boosted Cascade of Simple Features.*
+
+While Haar cascades are nearly 20 years old, they are still used today in certain situations as they are \textit{very} fast, and compared to more advanced object detectors, including HOG + Linear SVM [CITE/REF], and deep learning-based detectors [CITE/REF], they require comparatively little computation, making them efficient to use on resource constrained devices such as the RPi.
+
+\textbf{Lines 19-20} call the \texttt{.detectMultiScale} function of the \texttt{detector} which is used to detect the actual faces in the image.
+
+This function returns `rects`, a \textit{list} of the \textbf{bounding box locations} of each face in the image. Each bounding box is represented by four values:
+
+\begin{itemize}
+    \item `x`: The starting *x*-coordinate of the rectangle.
+    \item `y`: The starting y-coordinate of the rectangle.
+    \item `w`: The width of the rectangle.
+    \item `h`: The height of the rectangle.
+\end{itemize}
+
+Taken together, these values allow us to locate each face in the image.
+
+The length of the \texttt{rects} determines the \textit{total number of faces} in the image -- we display the number of faces found to our terminal on **Line 21.**
+
+Now that we know the locations of the faces in the image, let’s draw our \texttt{rects} on the image:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos\]{python}
+Codeblock 4: Lines 23-29
+\end{minted}
+
+On \textbf{Line 24} we loop over each of the bounding boxes.
+
+We then take the bounding box coordinates and draw the rectangle surrounding the face on \textbf{Line 25} via the \texttt{cv2.rectangle} function (which we learned about in Section X [REF]).
+
+\textbf{Lines 28 and 28} display our output image to our screen.
+
+To execute the script, just execute the following command:
+
+\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+
+\end{minted}
+
+IMAGE
+
+Figure \ref{fig:bundle:TBD} [REF] visualizes our output.
+
+Notice how two faces are detected in the image -- one of myself and the other of my wife.
+
+As you can see, performing face detection via OpenCV is quite easy using the pre-supplied Haar cascade model!
+
+The problem with Haar cascades is that they are especially prone to false-positives and they sometimes even miss face detections altogether.
+
+To obtain reasonable accuracy with a Haar cascade you may have to tune the values \texttt{.detectMultiScale} on a per-image basis which does not allow for robust face detection.
+
+That said, Haar cascades are computationally efficient which makes them suitable for real-time face detection on the Raspberry Pi.
+
+We’ll learn about the more advanced (1) HOG + Linear SVM and (2) deep learning-based face detectors in the \textit{Hacker Bundle} and \textit{Hobbyist Bundle} of this text.
+
+%------------------------------------------------------------------------------------
+
+\section{Summary}
+
+In this chapter you learned about basic OpenCV functions and computer vision techniques that we’ll commonly use inside this text. Our implementations will start off basic and then build upon these fundamentals, eventually creating more complex computer vision applications on the Raspberry Pi.
+
+That said, this chapter is \textit{not} meant to be an exhaustive review of the OpenCV library, nor a review of the computer vision field as a whole. If this is your first time working with OpenCV I would \textbf{strongly encourage you} to read through \textit{Practical Python and OpenCV} (PPaO) [CITE/REF] in tandem with this text -- PPaO will get you up to speed quickly and ensure you get the most value out of *Raspberry Pi for Computer Vision*.
+
+Secondly, if you would like to study computer vision in-depth, be sure to take a look PyImageSearch Gurus course [CITE/LINK]. The course is similar to a college-level survey course in computer vision but much more hands on and practical.
+
+Now that you have a handle on basic computer vision functions, let’s put them to use! In the next chapter you’ll learn how to access your RPi camera module/USB webcam via OpenCV.
+
