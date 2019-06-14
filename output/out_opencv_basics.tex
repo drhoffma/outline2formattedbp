@@ -29,7 +29,7 @@ In this chapter you will:
 
 Review project structure
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}
 PROJECT STRUCTURE
 \end{minted}
 
@@ -40,15 +40,15 @@ DIRECTORY STRUCTURE
 We’ll be reviewing four Python scripts:
 
 \begin{itemize}
-    \item `basics.py`: Contains our implementation of basic image processing operations so we can obtain hands-on experience with them.
-    \item `count_shapes.py`: Performs shape counting via OpenCV and contour/outline detection.
-    \item `image_sub.py`: Utilizes image background to segment the background of a scene from the foreground.
-    \item `detect_faces.py`: Detects faces in video streams.
+    \item \texttt{basics.py}: Contains our implementation of basic image processing operations so we can obtain hands-on experience with them.
+    \item \texttt{count_shapes.py}: Performs shape counting via OpenCV and contour/outline detection.
+    \item \texttt{image_sub.py}: Utilizes image background to segment the background of a scene from the foreground.
+    \item \texttt{detect_faces.py}: Detects faces in video streams.
 \end{itemize}
 
 The \texttt{.xml} file is Haar cascade [REF] that has been trained by the OpenCV library and then serialized to disk.
 
-We’ll load the model and then use it to perform face detection inside `detect_faces.py`.
+We’ll load the model and then use it to perform face detection inside \texttt{detect_faces.py}.
 
 The \texttt{images} directory contains various images that we’ll be using as examples inside this chapter.
 
@@ -70,7 +70,7 @@ Let’s begin by learning how to load an image from disk and then access individ
 
 Open up the \texttt{opencv_basics.py} file and insert the following code:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos]{python}
 Codeblock 1: Lines 1-12
 \end{minted}
 
@@ -100,7 +100,7 @@ Therefore, the dimensions of the image, represented by a NumPy array, are ordere
 
 If you were to execute the script, you would see the output of the \texttt{print} statement on \textbf{Line 10} to be:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}
 
 \end{minted}
 
@@ -131,7 +131,7 @@ It just takes a bit of math to figure that out:
 
 Now that we know exactly what a pixel is, let’s see how to retrieve the value of an individual pixel in an image:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=19,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=19,linenos]{python}
 Codeblock 2: Lines 19-13
 \end{minted}
 
@@ -160,7 +160,7 @@ Extracting “regions of interest” (ROI) is an important skill to have for ima
 
 Let’s continue on with our coding:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=25,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=25,linenos]{python}
 Codeblock 3: Lines 25-29
 \end{minted}
 
@@ -193,7 +193,7 @@ In the case of deep learning, we often resize images, ignoring aspect ratio, so 
 
 Lets’ resize our image to *300x300px*, ignoring aspect ratio:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=31,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=31,linenos]{python}
 Codeblock 4: Lines 31-34
 \end{minted}
 
@@ -201,7 +201,7 @@ In Figure \ref{fig:bundle:TBD} [REF] \textit{(left)} you can see our original im
 
 Using the \texttt{imutils.resize} function we can resize an image while *automatically maintaining the aspect ratio:*
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=36,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=36,linenos]{python}
 Codeblock 5: Lines 36-39
 \end{minted}
 
@@ -217,7 +217,7 @@ IMAGE: Rotated image
 
 For this next example we are going to rotate our input image:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=41,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=41,linenos]{python}
 Codeblock 6: Lines 41-44
 \end{minted}
 
@@ -247,7 +247,7 @@ Blurring and smoothing an image is a very easy in OpenCV.
 
 One of the most common methods you’ll encounter is Gaussian blurring:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=46,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=46,linenos]{python}
 Codeblock 7: Lines 46-50
 \end{minted}
 
@@ -272,7 +272,7 @@ You’ll also learn how to overlay text on an image as well.
 
 Let’s see how we can perform those operations now:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=52,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=52,linenos]{python}
 Codeblock 8: Lines 52-60
 \end{minted}
 
@@ -305,15 +305,15 @@ Now that we’ve learned about basic OpenCV functions, let’s put them to work 
 
 Open up the \texttt{count_shapes.py} file in your directory structure and insert the following code:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos]{python}
 Codeblock 1: Lines 1-10
 \end{minted}
 
-\textbf{Lines 2-4} handle our imports while \textbf{Lines 7-10} parse our command line arguments. We only need a single argument here, `--image`, which is the path to our input image.
+\textbf{Lines 2-4} handle our imports while \textbf{Lines 7-10} parse our command line arguments. We only need a single argument here, \texttt{-{}-image}, which is the path to our input image.
 
 Given the path to the input image, let’s load it from disk, and utilize our image processing functions from Section X [REF] to prepare it for object counting:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=12,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=12,linenos]{python}
 Codeblock 2: Lines 12-19
 \end{minted}
 
@@ -336,7 +336,7 @@ At this point we have been able to successfully identify the outlines of each sh
 
 The solution is to apply **contour detection:**
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=21,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=21,linenos]{python}
 Codeblock 3: Lines 21-26
 \end{minted}
 
@@ -348,7 +348,7 @@ Finally, \textbf{Line 26} initialize an integer, `total`, which will be used to 
 
 Let’s now perform the shape counting:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos]{python}
 Codeblock 4: Lines 28-38
 \end{minted}
 
@@ -362,13 +362,13 @@ The \texttt{total} object count is then incremented on \textbf{Line 38}.
 
 The final step is to show the output image and final object count:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=40,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=40,linenos]{python}
 Codeblock 5: Lines 40-43
 \end{minted}
 
 To execute the \texttt{count_shapes.py} script, just execute the following command:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}
 
 \end{minted}
 
@@ -412,20 +412,20 @@ Let’s get started!
 
 Open up the \texttt{image_sub.py} file and insert the following code:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos]{python}
 Codeblock 1: Lines 1-13
 \end{minted}
 
 \textbf{Lines 2-5} handle our imports while \textbf{Lines 8-13} parse our command line arguments. We’ll need two arguments for this script:
 
 \begin{itemize}
-    \item `--bg`: The path to the \textit{background} image.
-    \item `--fg`: The path to the \textit{foreground} image.
+    \item \texttt{-{}-bg}: The path to the \textit{background} image.
+    \item \texttt{-{}-fg}: The path to the \textit{foreground} image.
 \end{itemize}
 
 Next, let’s load these two images from disk and convert them to grayscale:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=15,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=15,linenos]{python}
 Codeblock 2: Lines 15-21
 \end{minted}
 
@@ -436,7 +436,7 @@ IMAGE Left: Grayscale images, Middle: Background subtraction, Right: Threshold
 
 Given both the grayscale representations of the \texttt{bg} and `fb`, we can perform image subtraction:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos]{python}
 Codeblock 3: Lines 23-26
 \end{minted}
 
@@ -460,7 +460,7 @@ The solution?
 
 Use thresholding to take the \texttt{sub} grayscale image and binarize it:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=28,linenos]{python}
 Codeblock 4: Lines 28-35
 \end{minted}
 
@@ -483,7 +483,7 @@ Notice how we have a series of white blobs on a black ground -- these white blob
 
 The next step is to take this \texttt{thresh}  image, and then apply contour detection to extract each of the individual regions:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=37,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=37,linenos]{python}
 Codeblock 5: Lines 37-43
 \end{minted}
 
@@ -493,7 +493,7 @@ On \textbf{Lines 39-41} we perform contour detection, just like in Section X [RE
 
 To see how we can update these values, let’s move on to the next code block:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=45,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=45,linenos]{python}
 Codeblock 6: Lines 45-56
 \end{minted}
 
@@ -524,7 +524,7 @@ Codeblock #7: LInes 58-63
 
 To execute this script, open up a command line and execute the following command:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}
 
 \end{minted}
 
@@ -541,7 +541,7 @@ As we’ll see in Chapter \ref{ch:hobbyist:TBD} [REF], these techniques, will si
 
 \subsection{bject and Face Detection}
 
-The final script we’ll be reviewing today is `detect_faces.py`. As the name suggests, this script will be used to detect the presence of faces in an image.
+The final script we’ll be reviewing today is \texttt{detect_faces.py}. As the name suggests, this script will be used to detect the presence of faces in an image.
 
 We’ll be using OpenCV’s Haar cascades for face detection as they are \textit{built into the library} and do not require us to train the model (which is a more advanced technique).
 
@@ -564,7 +564,7 @@ All that said, let’s learn how to perform face detection with OpenCV!
 
 Open up the \texttt{detect_faces.py} file in the project structure and insert the following code:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=1,linenos]{python}
 Codeblock 1: Lines 1-11
 \end{minted}
 
@@ -573,8 +573,8 @@ Codeblock 1: Lines 1-11
 We need to supply two command line argument to our script:
 
 \begin{itemize}
-    \item `--image`: The path to our input image we wish to apply face detection on.
-    \item \texttt{-{}-detector`: The path to the face detector `.xml} model.
+    \item \texttt{-{}-image}: The path to our input image we wish to apply face detection on.
+    \item \texttt{-{}-detector}: The path to the face detector \texttt{.xml} model.
 
 Given the path to our input image we can load it from disk and then convert it to grayscale:
 
@@ -582,7 +582,7 @@ Codeblock #2: 13-15
 
 We are now ready to perform face detection on the \texttt{gray} image:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=17,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=17,linenos]{python}
 Codeblock 3: Lines 17-21
 \end{minted}
 
@@ -609,7 +609,7 @@ The length of the \texttt{rects} determines the \textit{total number of faces} i
 
 Now that we know the locations of the faces in the image, let’s draw our \texttt{rects} on the image:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos\]{python}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=23,linenos]{python}
 Codeblock 4: Lines 23-29
 \end{minted}
 
@@ -621,7 +621,7 @@ We then take the bounding box coordinates and draw the rectangle surrounding the
 
 To execute the script, just execute the following command:
 
-\begin{minted}\[xleftmargin=15pt,frame=lines,framesep=1mm\]{console}
+\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}
 
 \end{minted}
 
