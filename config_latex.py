@@ -16,27 +16,23 @@ regexStrings = [
 	(r"\\section\{Project Structure\}",
 	 r"""\\section{Project Structure}\n\nReview project structure\n\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
 
-	(r"—",
-	 r"--"),
+	# long dash
+	(r"--",
+	 r"—"),
 
 	# Figure reference
 	(r"Figure X",
 	 r"Figure \\ref{fig:bundle:TBD}"),
 
-	# (r"Summary",
-	 # r"\\section\{Summary\}"),
-
-	(r""" \_(.*?)\_ """,
-	 r""" \\textit{\g<1>} """),
-
 	# console COMMAND OUTPUT
 	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\n\n\\end{minted}\n"""),
+	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\n\nCOMMAND \+ OUTPUT\\end{minted}\n"""),
 
-	# italics (x, y)-coordinates
-	(r""" \(x, y\)-(.*) """,
-	 r""" \\textit{\(x, y\)}-\g<1> """),
+	# bold + italics
+	(r"""\*\*\*(.*?)\*\*\*""",
+	 r"""\\textbf{\\textit{\g<1>}}"""),
 
+	# ##### must be under ***triple*** stars #####
 	# bold Line X
 	(r"""\*\*Line (\d*)\*\*""",
 	 r"""\\textbf{Line \g<1>}"""),
@@ -50,12 +46,21 @@ regexStrings = [
 	 r"""\\textbf{Lines \g<1> and \g<2>}"""),
 
 	# bold generic
-	(r""" \*\*(.*?)\*\* """,
-	 r""" \\textbf{\g<1>} """),
+	(r"""\*\*(.*?)\*\*""",
+	 r"""\\textbf{\g<1>}"""),
 
-	# must be under the double stars
-	(r""" \*(.*?)\* """,
-	 r""" \\textit{\g<1>} """),
+	# ##### must be under **double** stars #####
+	# italics
+	(r"""\*{1}(.*?)\*{1}""",
+	 r"""\\textit{\g<1>}"""),
+
+	# italics
+	(r"""\_(.*?)\_""",
+	 r"""\\textit{\g<1>}"""),
+
+	# italics (x, y)-coordinates
+	(r""" \(x, y\)-(.*) """,
+	 r""" \\textit{\(x, y\)}-\g<1> """),
 
 	# preformatted CL arg
 	(r"""`--(.*?)`""",
@@ -66,7 +71,7 @@ regexStrings = [
 	 r"""\\texttt{\g<1>.py}"""),
 
 	# preformatted
-	(r""" `(.*?)` """,
-	 r""" \\texttt{\g<1>} """)
+	(r"""`(.*?)`""",
+	 r"""\\texttt{\g<1>}""")
 
 ]
