@@ -26,7 +26,7 @@ regexStrings = [
 
 	# console COMMAND OUTPUT
 	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\n\nCOMMAND \+ OUTPUT\\end{minted}\n"""),
+	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nCOMMAND + OUTPUT\n\\end{minted}\n"""),
 
 	# bold + italics
 	(r"""\*\*\*(.*?)\*\*\*""",
