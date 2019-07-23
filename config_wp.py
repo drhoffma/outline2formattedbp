@@ -40,8 +40,8 @@ output</pre>\n\n...\n"""),
 	(r"`(.*?).py`",
 	 r"""<span class="lang:sh decode:true crayon-inline">\g<1>.py</span>"""),
 
-	(r"""\`(.*?)\`(.?)""",
-	 r"""<span class="lang:python decode:true  crayon-inline ">\g<1></span>\g<2>"""),
+	(r"""`(.*?)`""",
+	 r"""<span class="lang:python decode:true  crayon-inline ">\g<1></span>"""),
 
 	(r"Summary",
 	 r"<h2>Summary</h2>"),
@@ -70,11 +70,11 @@ output</pre>\n\n...\n"""),
 	(r"""\<a href="(.*?)"\>(.*\>)\<\/a\>""",
 	 r"""\<a href="\g<1>" target="_blank" rel="noopener">\g<2>\<\/a\>"""),
 
-	(r"""\<span class.*?\>(.*)\<\/span\>""",
-	r"""\g<1>"""),
+	# (r"""\<span class.*?\>(.*)\<\/span\>""",
+	# r"""\g<1>"""),
 
-	(r"""\<span class.*?\>(.*)\<\/span\>""",
-	r"""\g<1>"""),
+	# (r"""\<span class.*?\>(.*)\<\/span\>""",
+	# r"""\g<1>"""),
 
 	(r"""\<span style="font-weight: bold;"\>(.*?)\<\/span\>""",
 	 r"""\<strong\>\g<1>\<\/strong\>"""),
@@ -98,35 +98,13 @@ output</pre>\n\n...\n"""),
 	 r"""<em>(x, y)</em>-\g<1> """),
 
 	(r"""Line (\d*)""",
-	 r"""<strong>Line \g<1></strong>""")
+	 r"""<strong>Line \g<1></strong>"""),
 
-	# (r"""Lines (\d*)-(\d*)""",
-	#  r"""<strong>Lines \g<1>-\g<2></strong>"""),
+	(r"""Lines (\d*)-(\d*)""",
+	 r"""<strong>Lines \g<1>-\g<2></strong>"""),
 
-	# (r"""Lines (\d*) and (\d*)""",
-	#  r"""<strong>Lines \g<1> and \g<2></strong>""")
-
-	# MARKDOWN
-#	(r"""## (.*)""",
-#	 r"""<h2>\g<1></h2>"""),
-#
-#	(r"""### (.*)""",
-#	 r"""<h3>\g<1></h3>"""),
-#
-#	(r"""_(.*)_""",
-#	 r"""<em>\g<1></em>"""),
-#
-#	(r""" \*([a-zA-Z].*?)\* """,
-#	 r"""<em>\g<1></em>"""),
-#
-#	(r"""\*\*(.*)\*\*""",
-#	 r"""<strong>\g<1></strong>"""),
-#
-#	(r"""\[(.*)\]\((.*)\)""",
-#	 r"""<a href="\g<2>" target="_blank" rel="noopener">\g<1></a>"""),
-#
-#	(r"""```\n((.*\n)*?)```\n\n""",
-#	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">\g<1></pre>\n\n""")
+	(r"""Lines (\d*) and (\d*)""",
+	 r"""<strong>Lines \g<1> and \g<2></strong>""")
 
 
 ]
