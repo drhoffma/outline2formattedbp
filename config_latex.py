@@ -10,11 +10,11 @@ regexStrings = [
 
 	# minted Codeblock Python
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
-	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=\g<3>,linenos]{python}\nCodeblock \g<2>: Lines \g<3>-\g<4>\n\\end{minted}"""),
+	 r"""\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=\g<3>,linenos]{python}\nCodeblock \g<2>: Lines \g<3>-\g<4>\n\\end{minted}\n"""),
 
 	# Project Structure
-	(r"\\section\{Project Structure\}",
-	 r"""\\section{Project Structure}\n\nReview project structure\n\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
+	(r"PROJECT STRUCTURE}",
+	 r"""\n\nReview project structure\n\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{text}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
 
 	# long dash
 	(r"--",
@@ -25,8 +25,8 @@ regexStrings = [
 	 r"Figure \\ref{fig:bundle:TBD}"),
 
 	# console COMMAND OUTPUT
-	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
-	 r"""\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nCOMMAND + OUTPUT\n\\end{minted}\n"""),
+	(r"""[\s-]*COMMAND[\s-]*OUTPUT""",
+	 r"""\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{console}\nCOMMAND + OUTPUT\n\\end{minted}\n"""),
 
 	# bold + italics
 	(r"""\*\*\*(.*?)\*\*\*""",

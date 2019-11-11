@@ -34,6 +34,9 @@ output</pre>\n\n...\n"""),
 	(r"Figure X",
 	 r"<strong>Figure X</strong>"),
 
+	(r""""(.*?) section""",
+	 r"""<em>"\g<1>"</em> section"""),
+
 	(r""".Downloads.""",
 	 r"""<strong><em>"Downloads"</em></strong>"""),
 
