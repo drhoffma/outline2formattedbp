@@ -18,7 +18,7 @@ args = vars(ap.parse_args())
 
 # Markdown -> wp html
 if args["format"] == "md2wp":
-	import config_markdown as config
+	import config_md2wp as config
 	if args["title"] == "":
 		print("[ERROR] you are formatting a blog post and you didn't "
 			"provide a title")
@@ -26,11 +26,11 @@ if args["format"] == "md2wp":
 
 # Dropbox paper md export -> LaTeX book chapter
 elif args["format"] == "md2latex":
-	import config_markdown as config
+	import config_md2latex as config
 
 # WP (evernote PDF outline -> text -> wp html)
 elif args["format"] == "txt2wp":
-	import config_wp as config
+	import config_txt2wp as config
 	if args["title"] == "":
 		print("[ERROR] you are formatting a blog post and you didn't "
 			"provide a title")

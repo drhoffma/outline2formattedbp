@@ -32,9 +32,12 @@ output</pre>\n\n...\n"""),
 	(r"""\*{1}(.*?)\*{1}""",
 	 r"""<em>\g<1></em>"""),
 
+	(r"""—""",
+	 r"""--"""),
+
 	# italics
-	(r"""\_(.*?)\_""",
-	 r"""<em>\g<1></em>"""),
+	#(r"""\_(.*?)\_""",
+	# r"""<em>\g<1></em>"""),
 
 	# italics (x, y)-coordinates
 	(r""" \(x, y\)-(.*) """,
@@ -42,6 +45,9 @@ output</pre>\n\n...\n"""),
 
 	(r"JUMP TO CODE DOWNLOAD",
 	 r"[jump_to_code_download]"),
+
+	(r"""DOWNLOAD FORM""",
+	 r"""[code_download_form action="" formid=""]"""),
 
 	# preformatted filename
 	(r"`(.*?).py`",

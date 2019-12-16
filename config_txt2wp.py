@@ -37,8 +37,8 @@ output</pre>\n\n...\n"""),
 	(r""""(.*?) section""",
 	 r"""<em>"\g<1>"</em> section"""),
 
-	(r""".Downloads.""",
-	 r"""<strong><em>"Downloads"</em></strong>"""),
+	(r"""DOWNLOAD FORM""",
+	 r"""[code_download_form action="" formid=""]"""),
 
 	(r"`(.*?).py`",
 	 r"""<span class="lang:sh decode:true crayon-inline">\g<1>.py</span>"""),
@@ -94,7 +94,7 @@ output</pre>\n\n...\n"""),
 	(r"""\<span style="font-weight: bold; font-size: 18px;"\>(.*?)\<\/span\>""",
 	 r"""\n\<h3\>\g<1>\<\/h3\>\n"""),
 
-	(r"""COMMAND( ?\n?)OUTPUT ?(.*)""",
+	(r"""COMMAND""",
 	 r"""\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>"""),
 
 	(r"""\(x, y\)-(.*) """,
