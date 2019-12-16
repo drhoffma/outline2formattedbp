@@ -1,0 +1,64 @@
+Regular Expressions for BPs:
+
+FIND: Codeblock #([0-9].*): Lines (.*)-(.*)(.*)
+REPLACE: \n<pre class="start-line:$2 lang:python decode:true " title="Fashion MNIST with Keras and Deep Learning">Codeblock $1 Lines $2-$3</pre>\n\n$4
+
+FIND: </*div.*
+REPLACE:
+
+FIND: JUMP TO CODE DOWNLOAD
+REPLACE: [jump_to_code_download]
+
+FIND: To learn (.*), just keep reading!
+REPLACE: <strong>To learn $1, <em>just keep reading!</em></strong>
+
+FIND: Review project structure
+REPLACE: Review project structure\n\n<pre class="start-line:1 lang:shell decode:true " title="Fashion MNIST with Keras and Deep Learning">$ tree --dirsfirst --filelimit 10
+output</pre>\n\n...\n
+
+FIND: (.*), (.*) in the form below!
+REPLACE: <strong>$1, <em>$2 in the form below!</em></strong>
+
+FIND: —
+REPLACE: --
+
+FIND: Figure X
+REPLACE: <strong>Figure X</strong>
+
+FIND: "Downloads"
+REPLACE: <strong><em>"Downloads"</em></strong>
+
+FIND: `(.*).py`
+REPLACE: <span class="lang:sh decode:true  crayon-inline ">$1.py</span>
+
+FIND: "`(.*?)`"
+REPLACE: "<span class="lang:sh decode:true  crayon-inline ">$1</span>"
+
+FIND: (.*)Summary
+REPLACE: $1\n<h2>Summary</h2>
+
+FIND: (.*)Project Structure
+REPLACE $1\n<h3>Project Structure</h3>
+
+FIND: <li>([1-9]*)\. (.*)</li>
+REPLACE: <li>$2</li>
+
+FIND: ([1-9])x([1-9])
+REPLACE: <em>$1x$2</em>
+
+FIND: src="http://localhost/pyimagesearch_dev/wp-content/uploads/(.*)/(.*)/(.*)"
+REPLACE: src="https://www.pyimagesearch.com/uploads/$1/$2/$3"
+
+
+IN DEVELOPMENT====
+
+
+
+
+FIND: [1]\. (*.)\n
+REPLACE:  <ol>\n <li> $1\n
+
+FIND: [2-9]\. (*.)\n
+REPLACE:  <ol>$1\n
+
+Need to figure out how to handle last number with logic.
