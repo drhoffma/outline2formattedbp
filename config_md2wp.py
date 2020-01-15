@@ -12,6 +12,9 @@ regexStrings = [
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
 	 r"""\g<1>\n\n<pre class="start-line:\g<3> lang:python decode:true " title="@TITLE@">Codeblock \g<2> Lines \g<3>-\g<4></pre>\n\n\g<5>"""),
 
+	(r"""(.*)COMMAND OUTPUT(.*)""",
+	 r"""\g<1>\n\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">COMMAND OUTPUT</pre>\n\n\g<2>"""),
+
 	(r"Review project structure",
 	 r"""Review project structure\n\n<pre class="start-line:1 lang:sh decode:true " title="@TITLE@">$ tree --dirsfirst --filelimit 10
 output</pre>\n\n...\n"""),
@@ -57,6 +60,10 @@ output</pre>\n\n...\n"""),
 	(r"""`(.*?)`""",
 	 r"""<span class="lang:python decode:true  crayon-inline ">\g<1></span>"""),
 
+	# fix preformatted inline zero
+	(r""">0<""",
+	 r"""> 0<"""),
+
 	(r""".Downloads.""",
 	 r"""<strong><em>"Downloads"</em></strong>"""),
 
@@ -75,23 +82,23 @@ output</pre>\n\n...\n"""),
 # 	# MARKDOWN
 
 # 	# be careful with this one -- if there is a comment in a code block, it fails
-# 	(r"""^# (.*)""",
-# 	 r"""<h2>\g<1></h2>"""),
+	(r"""^# (.*)""",
+	 r"""<h2>\g<1></h2>"""),
 
-# 	(r"""^## (.*)""",
-# 	 r"""<h3>\g<1></h3>"""),
+	(r"""^## (.*)""",
+	 r"""<h3>\g<1></h3>"""),
 
-# 	(r"""^### (.*)""",
-# 	 r"""<h4>\g<1></h2>"""),
+	(r"""^### (.*)""",
+	 r"""<h4>\g<1></h2>"""),
 
-# 	(r"""_(.*)_""",
-# 	 r"""<em>\g<1></em>"""),
+	# (r"""_(.*)_""",
+	#  r"""<em>\g<1></em>"""),
 
-# 	(r""" \*([a-zA-Z].*?)\* """,
-# 	 r"""<em>\g<1></em>"""),
+	# (r""" \*([a-zA-Z].*?)\* """,
+	#  r"""<em>\g<1></em>"""),
 
-# 	(r"""\*\*(.*)\*\*""",
-# 	 r"""<strong>\g<1></strong>"""),
+	# (r"""\*\*(.*)\*\*""",
+	#  r"""<strong>\g<1></strong>"""),
 
 	(r"""\[(.*?)\]\((.*?)\)""",
 	 r"""<a href="\g<2>" target="_blank" rel="noopener">\g<1></a>"""),
