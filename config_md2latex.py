@@ -12,13 +12,25 @@ regexStrings = [
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
 	 r"""\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm,firstnumber=\g<3>,linenos]{python}\nCodeblock \g<2>: Lines \g<3>-\g<4>\n\\end{minted}\n"""),
 
+# 	# MARKDOWN
+
+# 	# be careful with this one -- if there is a comment in a code block, it fails
+	(r"""^# (.*)""",
+	 r"""\n%------------------------------------------------------------------------------------\n\n\\section{\g<1>}"""),
+
+	(r"""^## (.*)""",
+	 r"""\n%------------------------------------------------------------------------------------\n\n\\subsection{\g<1>}"""),
+
+	(r"""^### (.*)""",
+	 r"""\n%------------------------------------------------------------------------------------\n\n\\subsubsection{\g<1>}"""),
+
 	# Project Structure
 	(r"PROJECT STRUCTURE}",
 	 r"""\n\nReview project structure\n\n\\begin{minted}[xleftmargin=15pt,frame=lines,framesep=1mm]{text}\nPROJECT STRUCTURE\n\\end{minted}\n"""),
 
 	# long dash
-	(r"--",
-	 r"—"),
+	(r" -- ",
+	 r" — "),
 
 	# Figure reference
 	(r"Figure X",
@@ -45,6 +57,10 @@ regexStrings = [
 	(r"""\*\*Lines (\d*) and (\d*)\*\*""",
 	 r"""\\textbf{Lines \g<1> and \g<2>}"""),
 
+	# bold italics
+	(r"""\*\*\*(.*?)\*\*\*""",
+	 r"""\\textbf{\\textit{\g<1>}}"""),
+
 	# bold generic
 	(r"""\*\*(.*?)\*\*""",
 	 r"""\\textbf{\g<1>}"""),
@@ -52,10 +68,6 @@ regexStrings = [
 	# ##### must be under **double** stars #####
 	# italics
 	(r"""\*{1}(.*?)\*{1}""",
-	 r"""\\textit{\g<1>}"""),
-
-	# italics
-	(r"""\_(.*?)\_""",
 	 r"""\\textit{\g<1>}"""),
 
 	# italics (x, y)-coordinates
