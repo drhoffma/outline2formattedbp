@@ -1,5 +1,6 @@
 # import the necessary packages
 import argparse
+import sys
 import re
 
 # construct the argument parser and parse the arguments
@@ -10,7 +11,7 @@ ap.add_argument("-i", "--input", type=str, required=True,
 	help="path to input text file")
 ap.add_argument("-o", "--output", type=str, required=True,
 	help="path to output text file"),
-ap.add_argument("-t", "--title", type=str, default=None,
+ap.add_argument("-t", "--title", type=str, default="",
 	help="the blog post title")
 args = vars(ap.parse_args())
 
