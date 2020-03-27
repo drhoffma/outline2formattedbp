@@ -6,12 +6,23 @@
 # regular expression strings in format [(find, replace), (find2, replace2)...]
 regexStrings = [
 
-	(r" *\- ",
-	 r"""\n"""),
-
+	# codeblocks are assumed to be Python and the start line number is set from the outline "Codeblock #1: Lines 42-58"
 	(r"""(.*)Codeblock \#(\d*): Lines (\d*)-(\d*)(.*)""",
 	 r"""\g<1>\n\n<!-- wp:enlighter/codeblock {"linenumbers":"true","group":@GROUPA1@,"language":"python","lineoffset":"\g<3>","title":"@TITLE@"} -->\n<pre class="EnlighterJSRAW" data-enlighter-language="python" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="true" data-enlighter-lineoffset="\g<3>" data-enlighter-title="@TITLE@" data-enlighter-group="@GROUPA2@">\nCodeblock \g<2> Lines \g<3>-\g<4></pre>\n<!-- /wp:enlighter/codeblock -->\n\n\g<5>"""),
 
+	# # preformatted blocks in Notion are assumed to be "shell" format and start at line number 1
+	# (r""":\s*?^    (.*)""",
+	#  r"""\n\nBEGINSHELLBLOCK\n\g<1>"""),
+
+	# # preformatted blocks in Notion are assumed to be "shell" format and start at line number 1
+	# (r"""^    (.*)\n\s*<p>""",
+	#  r"""\n\nENDSHELLBLOCK\n\g<1>"""),
+
+
+#<!-- wp:enlighter/codeblock {"linenumbers":"true","group":@GROUPA1@,"language":"shell","lineoffset":"1","title":"@TITLE@"} -->\n<pre class="EnlighterJSRAW" data-enlighter-language="shell" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="true" data-enlighter-lineoffset="1" data-enlighter-title="@TITLE@" data-enlighter-group="@GROUPA2@">\g<1></pre>\n<!-- /wp:enlighter/codeblock -->\n\n
+
+
+	# command output block
 	(r"""(.*)COMMAND OUTPUT(.*)""",
 	 r"""\g<1>\n\n<!-- wp:enlighter/codeblock {"linenumbers":"true","group":@GROUPB1@,"language":"shell","lineoffset":"1","title":"@TITLE@"} -->\n<pre class="EnlighterJSRAW" data-enlighter-language="shell" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="true" data-enlighter-lineoffset="1" data-enlighter-title="@TITLE@" data-enlighter-group="@GROUPB2@">\nCOMMAND OUTPUT</pre>\n<!-- /wp:enlighter/codeblock -->\n\n\g<2>"""),
 
@@ -109,10 +120,6 @@ regexStrings = [
 	# preformatted
 	(r"""`(.*?)`""",
 	 r"""<code class="EnlighterJSRAW" data-enlighter-language="python">\g<1></code>"""),
-
-	# fix preformatted inline zero
-	(r""">0<""",
-	 r"""> 0<"""),
 
 	# (r""".Downloads.""",
 	#  r"""<strong><em>"Downloads"</em></strong>"""),
