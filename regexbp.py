@@ -6,7 +6,8 @@ import re
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-f", "--format", type=str, required=True,
-	choices=["txt2wp", "md2wp-crayon", "md2wp-enlighter", "md2latex", "temp"])
+	choices=["txt2wp", "md2wp-crayon", "md2wp-enlighter", "md2latex",
+		"temp"])
 ap.add_argument("-i", "--input", type=str, required=True,
 	help="path to input text file")
 ap.add_argument("-o", "--output", type=str, required=True,
@@ -19,7 +20,7 @@ args = vars(ap.parse_args())
 
 # Markdown -> wp html ****CRAYON****
 if args["format"] == "md2wp-crayon":
-	import config_md2wp as config
+	import config_md2wp_crayon as config
 	if args["title"] == "":
 		print("[ERROR] you are formatting a blog post and you didn't "
 			"provide a title")
@@ -36,6 +37,10 @@ elif args["format"] == "md2wp-enlighter":
 # Dropbox paper md export -> LaTeX book chapter
 elif args["format"] == "md2latex":
 	import config_md2latex as config
+
+# Dropbox paper md export -> LaTeX book chapter
+elif args["format"] == "latex2md":
+	import config_latex2md as config
 
 # WP (evernote PDF outline -> text -> wp html)
 elif args["format"] == "txt2wp":
@@ -71,6 +76,7 @@ with open(args["input"], "r+") as f:
 
 			# print("DEBUG")
 			# print(rs)
+			# print(replacePattern)
 
 			# perform the regex replacement
 			line = re.sub(findPattern, replacePattern, line)
